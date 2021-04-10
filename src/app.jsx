@@ -19,16 +19,16 @@ function App() {
 
   useDocumentTitle(`${pendingTasksCount} tasks left`);
 
-  const createTask = task => {
+  const createTask = (task) => {
     setTasks([...tasks, task]);
   };
 
-  const removeTask = id => {
+  const removeTask = (id) => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
   };
 
-  const completeTask = id => {
+  const completeTask = (id) => {
     const newTasks = tasks.map((task) => {
       if (task.id === id) {
         return {

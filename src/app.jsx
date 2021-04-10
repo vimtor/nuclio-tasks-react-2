@@ -19,16 +19,16 @@ function App() {
 
   useDocumentTitle(`${pendingTasksCount} tasks left`);
 
-  function createTask(task) {
+  const createTask = task => {
     setTasks([...tasks, task]);
-  }
+  };
 
-  function removeTask(id) {
+  const removeTask = id => {
     const newTasks = tasks.filter((task) => task.id !== id);
     setTasks(newTasks);
-  }
+  };
 
-  function completeTask(id) {
+  const completeTask = id => {
     const newTasks = tasks.map((task) => {
       if (task.id === id) {
         return {
@@ -39,12 +39,12 @@ function App() {
       return task;
     });
     setTasks(newTasks);
-  }
+  };
 
-  function clearCompleted() {
+  const clearCompleted = () => {
     const newTasks = tasks.filter((task) => !task.completed);
     setTasks(newTasks);
-  }
+  };
 
   return (
     <div>
@@ -63,9 +63,9 @@ function App() {
           />
         ))}
       </TaskList>
-      {completedTasksCount > 0 ? (
+      {completedTasksCount > 0 && (
         <button onClick={clearCompleted}>Clear completed tasks</button>
-      ) : null}
+      )}
     </div>
   );
 }

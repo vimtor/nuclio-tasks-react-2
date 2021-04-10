@@ -7,15 +7,15 @@ function TaskForm({ onSubmit }) {
   const [error, setError] = useState("");
   const ref = useRef();
 
-  function handleInput(event) {
+  const handleInput = event => {
     const newText = event.target.value;
     setTitle(newText);
     if (error && newText) {
       setError("");
     }
-  }
+  };
 
-  function handleSubmit(event) {
+  const handleSubmit = event => {
     event.preventDefault();
     if (!title) {
       setError("Your task title cannot be empty");
@@ -29,7 +29,7 @@ function TaskForm({ onSubmit }) {
       setError("");
     }
     ref.current.focus();
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>

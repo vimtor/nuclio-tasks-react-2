@@ -1,72 +1,37 @@
-import React, { useEffect } from "react";
-import TaskForm from "./components/task-form";
-import TaskList from "./components/task-list";
-import TaskItem from "./components/task-item";
-import useLocalStorage from "./hooks/use-local-storage";
-import useDocumentTitle from "./hooks/use-document-title";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import TaskListPage from "./pages/task-list-page";
+import HomePage from "./pages/home-page";
+import LoginPage from "./pages/login-page";
+import ProfilePage from "./pages/profile-page";
+import Navbar from "./components/navbar";
+import AuthProvider from "./components/auth-provider";
+import PrivateRoute from "./components/private-route";
+import NotificationProvider from "./components/notification-provider";
 
 function App() {
-  const [tasks, setTasks] = useLocalStorage("storedTasks", []);
-
-  const pendingTasksCount = tasks.filter((task) => !task.completed).length;
-  const completedTasksCount = tasks.length - pendingTasksCount;
-
-  useEffect(() => {
-    if (pendingTasksCount === 0) {
-      alert("You don't have any tasks to do");
-    }
-  }, []);
-
-  useDocumentTitle(`${pendingTasksCount} tasks left`);
-
-  const createTask = (task) => {
-    setTasks([...tasks, task]);
-  };
-
-  const removeTask = (id) => {
-    const newTasks = tasks.filter((task) => task.id !== id);
-    setTasks(newTasks);
-  };
-
-  const completeTask = (id) => {
-    const newTasks = tasks.map((task) => {
-      if (task.id === id) {
-        return {
-          ...task,
-          completed: !task.completed,
-        };
-      }
-      return task;
-    });
-    setTasks(newTasks);
-  };
-
-  const clearCompleted = () => {
-    const newTasks = tasks.filter((task) => !task.completed);
-    setTasks(newTasks);
-  };
-
   return (
-    <div>
-      <h1>Todo List</h1>
-      <p>Pending tasks: {pendingTasksCount}</p>
-      <TaskForm onSubmit={createTask} />
-      <TaskList>
-        {tasks.map((task) => (
-          <TaskItem
-            key={task.id}
-            id={task.id}
-            title={task.title}
-            completed={task.completed}
-            onClick={completeTask}
-            onRemove={removeTask}
-          />
-        ))}
-      </TaskList>
-      {completedTasksCount > 0 && (
-        <button onClick={clearCompleted}>Clear completed tasks</button>
-      )}
-    </div>
+    <Router>
+      <NotificationProvider>
+        <AuthProvider>
+          <Navbar />
+          <Switch>
+            <Route path="/login">
+              <LoginPage />
+            </Route>
+            <PrivateRoute path="/profile">
+              <ProfilePage />
+            </PrivateRoute>
+            <PrivateRoute path="/tasks">
+              <TaskListPage />
+            </PrivateRoute>
+            <Route path="/">
+              <HomePage />
+            </Route>
+          </Switch>
+        </AuthProvider>
+      </NotificationProvider>
+    </Router>
   );
 }
 

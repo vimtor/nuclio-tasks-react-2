@@ -1,0 +1,6 @@
+.notifications {
+  position: fixed;
+  right: 16px;
+  top: 16px;
+  background-color: lightblue;
+}

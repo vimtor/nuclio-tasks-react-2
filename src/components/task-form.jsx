@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { generateId } from "../utils/string";
 import useLocalStorage from "../hooks/use-local-storage";
 
-function TaskForm({ onSubmit }) {
+function TaskForm({ onSubmit, children }) {
   const [title, setTitle] = useLocalStorage("taskTitle", "");
   const [error, setError] = useState("");
   const ref = useRef();
@@ -42,6 +42,7 @@ function TaskForm({ onSubmit }) {
       />
       <button type="submit">Add</button>
       {error && <p style={{ color: "red" }}>{error}</p>}
+      {children}
     </form>
   );
 }
